@@ -8,13 +8,7 @@ class BluetoothDevice {
   final String name;
 
   BluetoothDevice(this.id, this.name);
-
-  static checkUse() async {
-    bool canUse = canUseBlue();
-    print('canUse $canUse');
-  }
-
-  //
+    //
   //  Future<List<BluetoothDevice>> requestNearbyDevices() async {
   //   final jsPromise = js_util.callMethod(navigator, 'bluetooth.requestDevice', [js_util.newObject()]);
   //   final promise = js_util.promiseToFuture(jsPromise);

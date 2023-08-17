@@ -1,40 +1,11 @@
-diff --git a/packages/flutter_tools/lib/src/base/logger.dart b/packages/flutter_tools/lib/src/base/logger.dart
-index 5643d90..525ece4 100644
---- a/packages/flutter_tools/lib/src/base/logger.dart
-+++ b/packages/flutter_tools/lib/src/base/logger.dart
-@@ -39,6 +39,7 @@ abstract class Logger {
-  void sendError(String message, {StackTrace? stackTrace});
-  void sendEvent(String message);
-  void sendTiming(String message, Duration duration);
-+  void sendExperimentalFlag(bool enabled);
-}
-
-/// The [Logger] for the `flutter` tool.
-diff --git a/packages/flutter_tools/lib/src/runner/flutter_command.dart b/packages/flutter_tools/lib/src/runner/flutter_command.dart
-index 91dfcd5..10e3c61 100644
---- a/packages/flutter_tools/lib/src/runner/flutter_command.dart
-+++ b/packages/flutter_tools/lib/src/runner/flutter_command.dart
-@@ -82,6 +82,8 @@ class FlutterCommandResult {
-  int? exitStatus;
-}
-
-+bool enableExperimentalFlag = false;
-+
-/// A command for executing a Flutter command.
-abstract class FlutterCommand<T> extends Command<T> {
-  FlutterCommand({
-@@ -139,6 +141,7 @@ abstract class FlutterCommand<T> extends Command<T> {
-        argParser.addFlag(
-          'verbose',
-          negatable: false,
-+        help: 'Enable experimental flag',
-          abbr: 'v',
-          defaultsTo: false,
-        );
-@@ -237,6 +240,7 @@ abstract class FlutterCommand<T> extends Command<T> {
-    if (argResults!['verbose'] == true) {
-      globals.printStatus('Running in verbose mode.');
-    }
-+    enableExperimentalFlag = argResults!['verbose'] == true;
-  }
-}
+flutter/
+ |-bin/
+ |-dev/
+ |-examples/
+ |-packages/
+ |-.git/
+ |-.github/
+ |-AUTHORS
+ |-CODEOWNERS
+ |-CODE_OF_CONDUCT.md
+ |-...

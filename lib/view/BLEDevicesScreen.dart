@@ -24,18 +24,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // List<BluetoothDevice> nearbyDevices = [];
 
-
-  Future<void> discoverNearbyDevices() async {
-    // try {
-    //   final devices = await BluetoothDevice.checkUse();
-    //   setState(() {
-    //     nearbyDevices = devices;
-    //   });
-    // } catch (e) {
-    //   print('Error discovering devices: $e');
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,18 +36,18 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ElevatedButton(
               onPressed: (){
-                bool canUse = canUseBlue();
-                print('canUse $canUse');
+                final supported = FlutterWebBluetooth.instance.isBluetoothApiSupported;
+                print('support - $supported');
               },
-              child: Text('check Use'),
+              child: const Text('Support'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async{
-                final supported = FlutterWebBluetooth.instance.isBluetoothApiSupported;
-                print('supported -  $supported');
+                final available = FlutterWebBluetooth.instance.isAvailable;
+                print('available -  $available');
               },
-              child: Text('getAvailability'),
+              child: const Text('availability'),
             ),
             SizedBox(height: 20),
           ],
