@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_bluetooth/flutter_web_bluetooth.dart';
-import 'package:number_trivia/view/bluetoothDevice.dart';
-import 'package:web_blue/web_blue.dart';
 
 class NearBluetoothDevices extends StatelessWidget {
   @override
