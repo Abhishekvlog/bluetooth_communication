@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_bluetooth/flutter_web_bluetooth.dart';
+import 'package:get/get.dart';
+import '../controller/bluetooth_controller.dart';
 
 class NearBluetoothDevices extends StatelessWidget {
   @override
@@ -20,35 +21,103 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // List<BluetoothDevice> nearbyDevices = [];
+  final BluetoothController btController = Get.put(BluetoothController());
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nearby Bluetooth Devices'),
+        title: const Text('Nearby Bluetooth Devices'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: (){
-                final supported = FlutterWebBluetooth.instance.isBluetoothApiSupported;
-                print('support - $supported');
-              },
-              child: const Text('Support'),
+      body: SizedBox(
+        // Wrap with Container to provide explicit constraints
+        width: double.infinity,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Obx(() {
+                  btController.checkWebSupport();
+                  final bool support = btController.supported.value;
+                  final bool connected = btController.connected.value;
+                  final bool showDataScreen = btController.showData.value;
+                  if (support) {
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            btController.scanDevices();
+                          },
+                          child: const Text("scan device"),
+                        ),
+                        if (connected)
+                          Center(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(
+                                      height: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            btController.startNotification();
+                                          },
+                                          child: const Text("start session")),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            btController.stopNotification();
+                                          },
+                                          child: const Text("end session")),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            btController.disconnect();
+                                          },
+                                          child: const Text("disconnect")),
+                                    ),
+                                  ],
+                                ),
+                                if (showDataScreen)
+                                  Center(
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                              onPressed: () {btController.getList();},
+                                              child: const Text("get Data")),
+                                        ),],
+                                    ),
+                                  ),
+                                if(btController.isLoading.value)
+                                  Center(
+                                    child: LinearProgressIndicator(),
+                                  ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ));
+                  } else {
+                    return const Center(child: Text("Browser is not supported"));
+                  }
+                }),
+              ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async{
-                final available = FlutterWebBluetooth.instance.isAvailable;
-                print('available -  $available');
-              },
-              child: const Text('availability'),
-            ),
-            SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
     );
